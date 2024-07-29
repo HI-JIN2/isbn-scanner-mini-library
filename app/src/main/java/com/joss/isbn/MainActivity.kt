@@ -60,6 +60,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.barcodeView.decodeContinuous(object : BarcodeCallback {
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun barcodeResult(result: BarcodeResult) {
                 binding.barcodeView.pause()
                 isbn = result.text
@@ -132,7 +133,7 @@ class MainActivity : AppCompatActivity() {
 
 
                     title = book?.title.toString()
-                    author = book?.authors.toString()
+                    author = book?.authors?.joinToString(", ").toString()
                     createCallNumber()
 
                 } else {
