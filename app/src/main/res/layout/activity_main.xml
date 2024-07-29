@@ -27,6 +27,23 @@
         android:text="Scanned ISBN will be shown here"
         android:textSize="18sp" />
 
+
+    <TextView
+        android:id="@+id/bookTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Title: "
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/bookAuthorTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Authors: "
+        android:textSize="18sp" />
+
     <Button
         android:id="@+id/btn_add_db"
         android:layout_width="wrap_content"

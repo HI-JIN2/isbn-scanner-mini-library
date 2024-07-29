@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -15,7 +17,11 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "api_key", getApiKey("api_key"))
+
     }
+
 
     buildTypes {
         release {
@@ -36,8 +42,17 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
+
+
+// 2. local.properties 내부에서 key값을 가져오는 함수 구현방식
+
+fun getApiKey(propertyKey: String): String {
+    return gradleLocalProperties(rootDir, providers).getProperty(propertyKey)
+}
+
 
 dependencies {
 
@@ -55,4 +70,8 @@ dependencies {
 
     //book
     //    implementation(libs.google.api.services.books)
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
 }

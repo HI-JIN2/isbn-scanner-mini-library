@@ -3,6 +3,7 @@ package com.joss.isbn
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -10,10 +11,16 @@ import androidx.core.content.ContextCompat
 import com.joss.isbn.databinding.ActivityMainBinding
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    private val apiKey = "AIzaSyAG-zIw81MIbeBKDiueFzTUvOK9x0-T7rI"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,10 +44,14 @@ class MainActivity : AppCompatActivity() {
         binding.barcodeView.decodeContinuous(object : BarcodeCallback {
             override fun barcodeResult(result: BarcodeResult) {
                 binding.barcodeView.pause()
-                binding.tbIsbn.text = "Scanned ISBN: ${result.text}"
+                val isbn = result.text
+
+                binding.tbIsbn.text = "Scanned ISBN: ${isbn}"
+
+                fetchBookInfo(isbn)
 
                 binding.btnAddDb.setOnClickListener() {
-                    addDB(result.text)
+                    addDB(isbn)
                 }
             }
 
@@ -78,5 +89,34 @@ class MainActivity : AppCompatActivity() {
 
     fun addDB(isbnCode: String) {
         Toast.makeText(this, isbnCode, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun fetchBookInfo(isbn: String) {
+        val query = "isbn:$isbn"
+        RetrofitClient.instance.getBookByISBN(query, apiKey).enqueue(object :
+            Callback<BookResponse> {
+            override fun onResponse(call: Call<BookResponse>, response: Response<BookResponse>) {
+
+                Log.d("bookinfo", response.body().toString())
+
+                if (response.isSuccessful && response.body()?.items?.isNotEmpty() == true) {
+                    val book = response.body()?.items?.get(0)?.volumeInfo
+                    binding.bookTitleTextView.text = "Title: ${book?.title}"
+                    binding.bookAuthorTextView.text =
+                        "Authors: ${book?.authors?.joinToString(", ")}"
+                } else {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "No book found for this ISBN",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<BookResponse>, t: Throwable) {
+                Toast.makeText(this@MainActivity, "Failed to fetch book info", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        })
     }
 }
