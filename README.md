@@ -30,4 +30,5 @@ Project Summary: Create a Library Catalog System Using an Android App
 - google spread sheet api (for db)
 
 ## reference
-[Insert Data In Google Sheet by Android Studio| Google Sheet As Database | Android Studio](https://www.youtube.com/watch?v=-NG588pWT-o)
+- [Google Books API using REST](https://developers.google.com/books/docs/v1/getting_started?hl=ko#REST)
+- [Insert Data In Google Sheet by Android Studio| Google Sheet As Database | Android Studio](https://www.youtube.com/watch?v=-NG588pWT-o)
