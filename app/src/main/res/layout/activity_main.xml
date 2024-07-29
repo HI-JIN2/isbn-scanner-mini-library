@@ -32,7 +32,7 @@
         android:id="@+id/bookTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:text="Title: "
         android:textSize="18sp" />
 
@@ -40,19 +40,27 @@
         android:id="@+id/bookAuthorTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="Authors: "
         android:textSize="18sp" />
 
-    <Button
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
+
+
+        <Button
         android:id="@+id/btn_find_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="findInfo" />
+            android:layout_marginRight="10dp"
+            android:text="find Info" />
 
     <Button
         android:id="@+id/btn_add_db"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="add DB" />
+    </LinearLayout>
+
 </LinearLayout>

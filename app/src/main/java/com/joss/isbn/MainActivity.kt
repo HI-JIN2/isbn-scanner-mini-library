@@ -2,7 +2,6 @@ package com.joss.isbn
 
 import android.Manifest
 import android.content.pm.PackageManager
-
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -15,6 +14,7 @@ import com.journeyapps.barcodescanner.BarcodeResult
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.time.LocalDateTime
 import java.util.Locale
 
 
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     var title: String = ""
     var author: String = ""
-    var isbnCode: String = ""
+    var isbn: String = ""
     var callNumber: String = ""
 
 
@@ -53,13 +53,12 @@ class MainActivity : AppCompatActivity() {
         binding.barcodeView.decodeContinuous(object : BarcodeCallback {
             override fun barcodeResult(result: BarcodeResult) {
                 binding.barcodeView.pause()
-                val isbn = result.text
+                isbn = result.text
 
                 binding.tbIsbn.text = "Scanned ISBN: ${isbn}"
 
                 binding.btnFindInfo.setOnClickListener() {
-                    fetchBookInfo(isbn)
-                    createCallNumber()
+                    findBookInfo(isbn)
                 }
 
                 binding.btnAddDb.setOnClickListener {
@@ -102,12 +101,12 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun fetchBookInfo(isbn: String) {
+    private fun findBookInfo(isbn: String) {
         val query = "isbn:$isbn"
 
         Toast.makeText(
             this@MainActivity,
-            "$isbn+의 정보를 조회 중",
+            "$isbn 의 정보를 조회 중",
             Toast.LENGTH_SHORT
         ).show()
         RetrofitClient.booksInstance.getBookByISBN(query, apiKey).enqueue(object :
@@ -125,6 +124,7 @@ class MainActivity : AppCompatActivity() {
 
                     title = book?.title.toString()
                     author = book?.authors.toString()
+                    createCallNumber()
 
                 } else {
                     Toast.makeText(
@@ -145,18 +145,21 @@ class MainActivity : AppCompatActivity() {
     fun createCallNumber(): String {
         callNumber =
             author.substring(0 until 3).uppercase(Locale.getDefault()) + title.substring(0 until 1)
+        Log.d("callnumber", callNumber)
         return callNumber
     }
 
     val sheetId = BuildConfig.sheet_id
     val url = "https://script.google.com/macros/s/$sheetId/exec?action=create"
 
-
     fun addBook(title: String, author: String, isbn: String, callNumber: String) {
 
-        Toast.makeText(this, isbnCode + "의 정보를 DB에 추가합니다.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, title + "의 정보를 DB에 추가합니다.", Toast.LENGTH_SHORT).show()
 
-        RetrofitClient.sheetInstance.addBookatSheet(url, title, author, isbn, callNumber)
+        RetrofitClient.sheetInstance.addBookatSheet(
+            url,
+            LocalDateTime.now().toString(), title, author, isbn, callNumber
+        )
             .enqueue(object :
                 Callback<String> {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
@@ -168,6 +171,7 @@ class MainActivity : AppCompatActivity() {
                 override fun onFailure(call: Call<String>, t: Throwable) {
                     Toast.makeText(this@MainActivity, "Failed to add to DB", Toast.LENGTH_SHORT)
                         .show()
+                    Log.d("addBook", t.toString())
                 }
             })
     }

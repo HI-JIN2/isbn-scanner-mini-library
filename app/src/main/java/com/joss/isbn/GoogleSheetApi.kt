@@ -11,6 +11,7 @@ interface GoogleSheetApi {
     @GET
     fun addBookatSheet(
         @Url url: String,
+        @Query("datetime") datetime: String,
         @Query("title") title: String,
         @Query("author") range: String,
         @Query("isbn") isbn: String,
