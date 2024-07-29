@@ -8,22 +8,28 @@
     tools:context=".MainActivity">
 
     <com.journeyapps.barcodescanner.DecoratedBarcodeView
-        android:id="@+id/barcodeView"
+        android:id="@+id/barcode_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
     <Button
-        android:id="@+id/scanButton"
+        android:id="@+id/btn_do_scan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Resume Scanning" />
 
     <TextView
-        android:id="@+id/isbnTextView"
+        android:id="@+id/tb_isbn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_margin="16dp"
         android:text="Scanned ISBN will be shown here"
         android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/btn_add_db"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="add DB" />
 </LinearLayout>

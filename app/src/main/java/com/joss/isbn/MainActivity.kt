@@ -30,14 +30,18 @@ class MainActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 1)
         }
 
-        binding.scanButton.setOnClickListener {
+        binding.btnDoScan.setOnClickListener {
             binding.barcodeView.resume()
         }
 
         binding.barcodeView.decodeContinuous(object : BarcodeCallback {
             override fun barcodeResult(result: BarcodeResult) {
                 binding.barcodeView.pause()
-                binding.isbnTextView.text = "Scanned ISBN: ${result.text}"
+                binding.tbIsbn.text = "Scanned ISBN: ${result.text}"
+
+                binding.btnAddDb.setOnClickListener() {
+                    addDB(result.text)
+                }
             }
 
             override fun possibleResultPoints(resultPoints: List<com.google.zxing.ResultPoint>) {}
@@ -70,5 +74,9 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         binding.barcodeView.pause()
+    }
+
+    fun addDB(isbnCode: String) {
+        Toast.makeText(this, isbnCode, Toast.LENGTH_SHORT).show()
     }
 }
