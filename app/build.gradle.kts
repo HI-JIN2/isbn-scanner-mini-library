@@ -50,13 +50,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-//    implementation(libs.google.api.services.books)
-
-
-
     //scanner
-
     implementation(libs.zxing.android.embedded)
-//    implementation ("com.google.zxing:core:3.4.1")
 
+    //book
+    //    implementation(libs.google.api.services.books)
 }
