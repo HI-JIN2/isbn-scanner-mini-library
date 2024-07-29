@@ -2,9 +2,11 @@ package com.joss.isbn
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -48,6 +50,13 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnDoScan.setOnClickListener {
             binding.barcodeView.resume()
+            binding.tbIsbn.text = ""
+            binding.bookAuthorTextView.text = ""
+            binding.bookTitleTextView.text = ""
+            isbn = ""
+            title = ""
+            author = ""
+            callNumber = ""
         }
 
         binding.barcodeView.decodeContinuous(object : BarcodeCallback {
@@ -152,6 +161,7 @@ class MainActivity : AppCompatActivity() {
     val sheetId = BuildConfig.sheet_id
     val url = "https://script.google.com/macros/s/$sheetId/exec?action=create"
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun addBook(title: String, author: String, isbn: String, callNumber: String) {
 
         Toast.makeText(this, title + "의 정보를 DB에 추가합니다.", Toast.LENGTH_SHORT).show()

@@ -17,13 +17,14 @@
         android:id="@+id/btn_do_scan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Resume Scanning" />
+        android:layout_marginTop="10dp"
+        android:text="Rescanning" />
 
     <TextView
         android:id="@+id/tb_isbn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="10dp"
         android:text="Scanned ISBN will be shown here"
         android:textSize="18sp" />
 
@@ -32,7 +33,7 @@
         android:id="@+id/bookTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:text="Title: "
         android:textSize="18sp" />
 
@@ -41,6 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Authors: "
+        android:layout_marginBottom="50dp"
         android:textSize="18sp" />
 
     <LinearLayout
@@ -54,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:text="find Info" />
+            android:text="find BookInfo" />
 
     <Button
         android:id="@+id/btn_add_db"
