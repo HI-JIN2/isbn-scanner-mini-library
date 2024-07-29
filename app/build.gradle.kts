@@ -57,4 +57,6 @@ dependencies {
     //scanner
 
     implementation(libs.zxing.android.embedded)
+//    implementation ("com.google.zxing:core:3.4.1")
+
 }
