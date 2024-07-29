@@ -4,14 +4,22 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
-    private const val BASE_URL = "https://www.googleapis.com/books/v1/"
 
-    val instance: GoogleBooksApi by lazy {
+    val booksInstance: GoogleBooksApi by lazy {
         val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl("https://www.googleapis.com/books/v1/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         retrofit.create(GoogleBooksApi::class.java)
+    }
+
+    val sheetInstance: GoogleSheetApi by lazy {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://script.google.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        retrofit.create(GoogleSheetApi::class.java)
     }
 }

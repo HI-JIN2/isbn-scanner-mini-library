@@ -1,4 +1,4 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -18,10 +18,31 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "api_key", getApiKey("api_key"))
-
     }
 
+    buildTypes {
+        release {
+            val p = Properties()
+            p.load(project.rootProject.file("local.properties").reader())
+            val apiKey: String = p.getProperty("api_key")
+            buildConfigField("String", "api_key", "\"$apiKey\"")
+
+            val sheetId: String = p.getProperty("sheet_id")
+            buildConfigField("String", "sheet_id", "\"$sheetId\"")
+
+        }
+
+        debug {
+            val p = Properties()
+            p.load(project.rootProject.file("local.properties").reader())
+            val apiKey: String = p.getProperty("api_key")
+            buildConfigField("String", "api_key", "\"$apiKey\"")
+
+            val sheetId: String = p.getProperty("sheet_id")
+            buildConfigField("String", "sheet_id", "\"$sheetId\"")
+
+        }
+    }
 
     buildTypes {
         release {
@@ -44,13 +65,19 @@ android {
         viewBinding = true
         buildConfig = true
     }
-}
 
+    packagingOptions {
+        exclude("META-INF/DEPENDENCIES")
+        exclude("META-INF/LICENSE")
+        exclude("META-INF/LICENSE.txt")
+        exclude("META-INF/license.txt")
+        exclude("META-INF/NOTICE")
+        exclude("META-INF/NOTICE.txt")
+        exclude("META-INF/notice.txt")
+        exclude("META-INF/ASL2.0")
+        exclude("META-INF/*.kotlin_module")
 
-// 2. local.properties 내부에서 key값을 가져오는 함수 구현방식
-
-fun getApiKey(propertyKey: String): String {
-    return gradleLocalProperties(rootDir, providers).getProperty(propertyKey)
+    }
 }
 
 
@@ -68,10 +95,11 @@ dependencies {
     //scanner
     implementation(libs.zxing.android.embedded)
 
-    //book
-    //    implementation(libs.google.api.services.books)
+    //retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.convertor)
 
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-
+    //google spread sheet
+    implementation(libs.google.api)
+    implementation(libs.google.api.sheets)
 }
